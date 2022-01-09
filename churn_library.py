@@ -107,3 +107,18 @@ def train_models(X_train, X_test, y_train, y_test):
               None
     '''
     pass
+
+
+if __name__ == "__main__":
+    df = import_data("./data/bank_data.csv")
+    perform_eda(df)
+    """encoder_helper(df, category_lst, response)
+    df = perform_feature_engineering(df, response)
+    classification_report_image(y_train,
+                                y_test,
+                                y_train_preds_lr,
+                                y_train_preds_rf,
+                                y_test_preds_lr,
+                                y_test_preds_rf)
+    feature_importance_plot(model, X_data, output_pth)
+    train_models(X_train, X_test, y_train, y_test)"""
