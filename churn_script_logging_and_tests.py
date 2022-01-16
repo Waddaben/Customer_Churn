@@ -139,11 +139,37 @@ def test_perform_feature_engineering(perform_feature_engineering,data_frame,resp
 
 	return training_data, testing_data, training_labels, testing_labels, response_data 
 
-def test_train_models(train_models):
+def test_train_models(train_models,training_data, testing_data, training_labels, testing_labels):
 	'''
 	test train_models
 	'''
+	try:
+		training_labels_preds_lr, testing_labels_preds_lr, lrc_model, training_labels_preds_rf, testing_labels_preds_rf, rfc_model = train_models(
+        training_data, testing_data, training_labels, testing_labels)
+		len(training_labels_preds_lr)
+		len(testing_labels_preds_lr)
+		len(training_labels_preds_rf)
+		len(testing_labels_preds_rf)
+		logging.info("Testing test_train_models, training and testing label predictions are in correct format: SUCCESS")
+	except TypeError as err:
+		logging.error("Testing test_train_models: training and testing label predictions are not correct format")
+		raise err
+	
+	try:
+		lrc_model.predict(training_data)
+		rfc_model.predict(training_data)
+		logging.info("Testing test_train_models, input data is in correct format: SUCCESS")
+	except KeyError as err:
+		logging.error("Testing test_train_models: input data is not in correct format")
+		raise err
 
+	try:
+		lrc_model.predict(training_data)
+		rfc_model.predict(training_data)
+		logging.info("Testing test_train_models, machine learning models are in correct format: SUCCESS")
+	except AttributeError as err:
+		logging.error("Testing test_train_models: machine learning models are not in correct format")
+		raise err
 
 if __name__ == "__main__":
 	data_frame = test_import(cls.import_data)
@@ -166,6 +192,8 @@ if __name__ == "__main__":
          'Total_Trans_Ct', 'Total_Ct_Chng_Q4_Q1', 'Avg_Utilization_Ratio',
          'Gender_Churn', 'Education_Level_Churn', 'Marital_Status_Churn',
          'Income_Category_Churn', 'Card_Category_Churn'])
+
+	test_train_models(cls.train_models, training_data, testing_data, training_labels, testing_labels)
 
 
 	
