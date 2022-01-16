@@ -1,3 +1,9 @@
+"""
+Training and analaysing machine learning models for predicting customer churn.
+Author: Wadda du Toit
+Date: Jan 2022
+"""
+
 import os
 import logging
 import churn_library_solution as cls
