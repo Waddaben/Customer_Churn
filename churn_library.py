@@ -62,25 +62,21 @@ def perform_eda(data_frame):
         plt.title("Churn distribution", fontsize=17)
         plt.tight_layout()
         plt.savefig('./images/eda/churn_distribution.png')
-        plt.show()
         plt.figure(figsize=(17, 7))
         data_frame['Customer_Age'].hist()
         plt.title("Age distribution", fontsize=17)
         plt.tight_layout()
         plt.savefig('./images/eda/age_distribution.png')
-        plt.show()
         plt.figure(figsize=(17, 7))
         data_frame.Marital_Status.value_counts('normalize').plot(kind='bar')
         plt.title("Maritial status distribution", fontsize=17)
         plt.tight_layout()
         plt.savefig('./images/eda/maritial_status_distribution.png')
-        plt.show()
         plt.figure(figsize=(17, 7))
         sns.distplot(data_frame['Total_Trans_Ct'])
         plt.title("Total transaction count distribution", fontsize=17)
         plt.tight_layout()
         plt.savefig('./images/eda/Total_transaction_count_distribution.png')
-        plt.show()
         plt.figure(figsize=(17, 7))
         sns.heatmap(
             data_frame.corr(),
@@ -90,20 +86,15 @@ def perform_eda(data_frame):
         plt.title("Correlation heatmap", fontsize=17)
         plt.tight_layout()
         plt.savefig('./images/eda/correlation_heatmap.png')
-        plt.show()
-
 
 def encoder_helper(data_frame, category_lst):
     '''
     helper function to turn each categorical column into a new column with
-    propotion of churn for each category - associated with cell 15 from the notebook
+    propotion of churn for each category
 
     input:
             data_frame: pandas dataframe
             category_lst: list of columns that contain categorical features
-            response: string of response name [optional argument that could be used
-                      for naming variables or index y column]
-
     output:
             data_frame: pandas dataframe with new columns for
     '''
@@ -146,7 +137,12 @@ def train_models(training_data, testing_data, training_labels, testing_labels):
               training_labels: y training data
               testing_labels: y testing data
     output:
-              None
+              training_labels_preds_lr: training predictions from logistic regression
+              training_labels_preds_rf: training predictions from random forest
+              testing_labels_preds_lr: test predictions from logistic regression
+              testing_labels_preds_rf: test predictions from random forest
+              lrc_model: logistical regression model
+              rfc_cross_val: random forest corss validated model
     '''
     print("Training LogisticalRegression")
     lrc_model = LogisticRegression()
@@ -166,7 +162,6 @@ def train_models(training_data, testing_data, training_labels, testing_labels):
     plt.title("Logistical regression ROC curve", fontsize=15)
     plt.tight_layout()
     plt.savefig('./images/results/logistical_regression_ROC_curve.png')
-    plt.show()
 
     print("Training Random Forests")
     rfc_model = RandomForestClassifier(random_state=42)
@@ -196,8 +191,6 @@ def train_models(training_data, testing_data, training_labels, testing_labels):
     plt.title("Random forests ROC curve", fontsize=15)
     plt.tight_layout()
     plt.savefig('./images/results/random_forests_ROC_curve.png')
-    plt.show()
-
     return training_labels_preds_lrc, testing_labels_preds_lr, lrc_model, training_labels_preds_rf,\
         testing_labels_preds_rf, rfc_cross_val
 
@@ -214,8 +207,10 @@ def classification_report_images(first_model,
     produces classification report for training and testing results and stores report as image
     in images folder
     input:
+            first_model: first machine learning model
+            second_model: second machine learning model
             training_labels: training response values
-            testing_labels:  test response values
+            testing_labels: test response values
             training_labels_preds_lr: training predictions from logistic regression
             training_labels_preds_rf: training predictions from random forest
             testing_labels_preds_lr: test predictions from logistic regression
@@ -242,7 +237,6 @@ def classification_report_images(first_model,
     plt.axis('off')
     plt.tight_layout()
     plt.savefig('./images/results/random_forests_report.png')
-    plt.show()
 
     plt.rc('figure', figsize=(5, 5))
     plt.text(0.01, 1.25, str('Logistic Regression Train'),
@@ -262,10 +256,9 @@ def classification_report_images(first_model,
     plt.axis('off')
     plt.tight_layout()
     plt.savefig('./images/results/logistical_regression_report.png')
-    plt.show()
 
-    joblib.dump(second_model.best_estimator_, './models/rfc_model.pkl')
-    joblib.dump(first_model, './models/logistic_model.pkl')
+    joblib.dump(first_model.best_estimator_, './models/rfc_model.pkl')
+    joblib.dump(second_model, './models/logistic_model.pkl')
 
 
 def feature_importance_plot(model, data, testing_data, output_pth):
@@ -291,7 +284,6 @@ def feature_importance_plot(model, data, testing_data, output_pth):
             5))
     plt.savefig(output_pth + './shap_summary_plot.png')
     plt.tight_layout()
-    plt.show()
 
     importances = model.best_estimator_.feature_importances_
     indices = np.argsort(importances)[::-1]
@@ -303,8 +295,6 @@ def feature_importance_plot(model, data, testing_data, output_pth):
     plt.xticks(range(data.shape[1]), names, rotation=90)
     plt.tight_layout()
     plt.savefig(output_pth + 'feature_importance_plot.png')
-    plt.show()
-
 
 if __name__ == "__main__":
     data_frame = import_data("./data/bank_data.csv")
@@ -325,12 +315,12 @@ if __name__ == "__main__":
          'Total_Trans_Ct', 'Total_Ct_Chng_Q4_Q1', 'Avg_Utilization_Ratio',
          'Gender_Churn', 'Education_Level_Churn', 'Marital_Status_Churn',
          'Income_Category_Churn', 'Card_Category_Churn'])
-    training_labels_preds_lr, testing_labels_preds_lr, lrc, training_labels_preds_rf, testing_labels_preds_rf, rfc = train_models(
+    training_labels_preds_lr, testing_labels_preds_lr, lrc_model, training_labels_preds_rf, testing_labels_preds_rf, rfc_model = train_models(
         training_data, testing_data, training_labels, testing_labels)
     print("Training done")
-    feature_importance_plot(rfc, response_data, testing_data, './images/results/')
-    classification_report_images(rfc,
-                                 lrc,
+    feature_importance_plot(rfc_model, response_data, testing_data, './images/results/')
+    classification_report_images(rfc_model,
+                                 lrc_model,
                                  training_labels,
                                  testing_labels,
                                  training_labels_preds_lr,

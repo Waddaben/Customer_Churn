@@ -1,0 +1,13 @@
+root - INFO - Testing import_data, file location: SUCCESS
+root - INFO - Testing import_data, file rows and columns: SUCCESS
+root - INFO - Testing perform_eda, input is correct format: SUCCESS
+root - INFO - Testing perform_eda, save location: SUCCESS
+root - INFO - Testing encoder_helper, data frame is correct format: SUCCESS
+root - INFO - Testing encoder_helper, category list correct format: SUCCESS
+root - INFO - Testing encoder_helper, 'Churn' column found: SUCCESS
+root - INFO - Testing perform_feature_engineering, keys found in dataframe: SUCCESS
+root - INFO - Testing perform_feature_engineering, data frame is correct format: SUCCESS
+root - INFO - Testing perform_feature_engineering, category list correct format: SUCCESS
+root - INFO - Testing perform_feature_engineering, training and testing data and labels are in correct format: SUCCESS
+root - INFO - Testing perform_feature_engineering, response data is in correct format: SUCCESS
+root - INFO - Testing perform_feature_engineering, file rows and columns: SUCCESS
