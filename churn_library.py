@@ -1,5 +1,7 @@
 """
-Training and analaysing machine learning models for predicting customer churn.
+File for analysing and formating the data which will be used for training and analaysing 
+the machine learning models for predicting customer churn.
+
 Author: Wadda du Toit
 Date: Jan 2022
 """

@@ -44,4 +44,8 @@ What to expect:
 3. The impact of the features for the random forest classifier will be displayed
 4. The final models and their results will be stored
 
+## Testing the .\churn_library.py file
+1. Run the testing file to test all the functions using the following line in the terminal
+> ipython churn_script_logging_and_tests.py
+2. Go to .\logs\churn_library.logs to review successes and errors
 
