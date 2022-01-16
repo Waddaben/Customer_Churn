@@ -1,5 +1,5 @@
 # Training and analaysing machine learning models for predicting customer churn.
- Author: Wadda du Toit
+ Author: Wadda du Toit,
  Date: Jan 2022
 
 # Predict Customer Churn
